@@ -112,7 +112,7 @@ create table Ingredientes_Plato (
 );
 
 create table Comanda (
-	Id_Comanda int not null auto_increment,
+	Id_Comanda int not null,
     Fecha date,
     Mesa int,
     hora time,
@@ -124,7 +124,7 @@ create table Comanda (
 create table Comanda_Platos (
 	Id_Comanda int not null,
     Codigo_Plato int not null,
-    catidad int,
+    cantidad int,
     PVP float,
     IVA float,
     foreign key (Id_Comanda) references Comanda (Id_Comanda),
@@ -628,6 +628,87 @@ values
 (82, 'Sulfitos'), /*Nugets de Pollo*/
 (83, null); /*Agua*/
 
+/*EJERCICIO 7*/
+insert into Sala (numSala)
+values 
+(1),
+(2);
+
+insert into Comanda (Id_Comanda, fecha, Mesa, hora, comensales, ticket, numSala)
+values
+(1, '2022-10-4', 2, '14:00:00', 2, 15, 1),
+(2, '2022-10-5', 4, '14:03:00', 4, 16, 1),
+(3, '2022-10-6', 5, '14:05:00', 3, 17, 1),
+(4, '2022-10-7', 3, '14:10:00', 4, 18, 1),
+(5, '2022-10-8', 1, '14:15:00', 2, 19, 1),
+(6, '2022-10-9', 10, '14:20:00', 3, 20, 2),
+(7, '2022-10-10', 8, '14:22:00', 2, 21, 2),
+(8, '2022-10-11', 7, '14:28:00', 1, 22, 2),
+(9, '2022-10-12', 9, '14:36:00', 6, 23, 2),
+(10, '2022-10-13', 6, '14:40:00', 3, 24, 2);
+
+insert into Comanda_Platos (Id_Comanda, Codigo_Plato, cantidad, PVP, IVA, numSala)
+values
+(1, 1, 2, 5.5 * cantidad, PVP* 0.21, 1), /*Paella*/
+(1, 4, 2, 5.5 * cantidad, PVP* 0.21, 1), /*Ensalada Verde*/
+(1, 20, 1, 5 * cantidad, PVP* 0.21, 1), /*Coulant*/
+(1, 17, 1, 1.2 * cantidad, PVP* 0.21, 1), /*Café Solo*/
+(1, 19, 1, 1.2 * cantidad, PVP* 0.21, 1), /*Café Cortado*/
+(2, 4, 4, 5.5 * cantidad, PVP* 0.21, 1), /*Ensalada Verde*/
+(2, 1, 1, 5.5 * cantidad, PVP* 0.21, 1), /*Paella*/
+(2, 9, 2, 11 *cantidad, PVP* 0.21, 1), /*Codornices*/
+(2, 10, 1, 9.5 * cantidad, PVP* 0.21, 1), /*Muslo de Pollo*/
+(2, 21, 1, 3 * cantidad, PVP* 0.21, 1), /*Helado de Vainilla*/
+(3, 5, 2, 9 * cantidad, PVP* 0.21, 1), /*Torradas de Salchichon*/
+(3, 2, 1, 8 * cantidad, PVP* 0.21, 1), /*Sopa de Rape*/
+(3, 11, 1, 7 * cantidad, PVP* 0.21, 1), /*Butifarra a la Brasa*/
+(3, 10, 1, 7 * cantidad, PVP* 0.21, 1), /*Muslo de Pollo*/
+(3, 24, 1, 3.5 * cantidad, PVP* 0.21, 1), /*Flan de Huevo*/
+(3, 20, 1, 5 * cantidad, PVP* 0.21, 1), /*Coulant*/
+(3, 21, 1, 3 * cantidad, PVP* 0.21, 1), /*Helado de Vainilla*/
+(4, 2, 3, 8 * cantidad, PVP* 0.21, 1), /*Sopa de Rape*/
+(4, 4, 2, 5.5 * cantidad, PVP* 0.21, 1), /*Ensalada Verde*/
+(4, 10, 3, 9.5 * cantidad, PVP* 0.21, 1), /*Muslo de Pollo*/
+(4, 13, 1, 12.5 * cantidad, PVP* 0.21, 1), /*Sepia a la Plancha*/
+(4, 17, 4, 1.2 * cantidad, PVP* 0.21, 1), /*Café Solo*/
+(5, 5, 1, 9 * cantidad, PVP* 0.21, 1), /*Torradas de Salchichon*/
+(5, 3, 1, 7 * cantidad, PVP* 0.21, 1), /*Piña con Jamón*/
+(5, 11, 1, 7 * cantidad, PVP* 0.21, 1), /*Butifarra a la Brasa*/
+(5, 7, 1, 7 * cantidad, PVP* 0.21, 1), /*Jamoncitos de Pavo Rustidos*/
+(5, 24, 1, 3.5 * cantidad, PVP* 0.21, 1), /*Flan de Huevo*/
+(5, 21, 1, 3 * cantidad, PVP* 0.21, 1), /*Helado de Vainilla*/
+(6, 4, 2, 5.5 * cantidad, PVP* 0.21, 2), /*Ensalada Verde*/
+(6, 5, 1, 9 * cantidad, PVP* 0.21, 2), /*Torradas de Salchichon*/
+(6, 10, 1, 9.5 * cantidad, PVP* 0.21, 2), /*Muslo de Pollo*/
+(6, 13, 1, 12.5 * cantidad, PVP* 0.21, 2), /*Sepia a la Plancha*/
+(6, 8, 1, 7 * cantidad, PVP* 0.21, 2), /*Butifarra de Escalivada*/
+(6, 20, 1, 5 * cantidad, PVP* 0.21, 2), /*Coulant*/
+(6, 24, 1, 3.5 * cantidad, PVP* 0.21, 2), /*Flan de Huevo*/
+(6, 22, 1, 5 * cantidad, PVP* 0.21, 2), /*Raja de Melón*/
+(6, 18, 1, 1.2 * cantidad, PVP* 0.21, 2), /*Café con Leche*/
+(6, 17, 2, 1.2 * cantidad, PVP* 0.21, 2), /*Café Solo*/
+(7, 4, 1, 5.5 * cantidad, PVP* 0.21, 2), /*Ensalada Verde*/
+(7, 2, 1, 8 * cantidad, PVP* 0.21, 2), /*Sopa de Rape*/
+(7, 1, 2, 5.5 * cantidad, PVP* 0.21, 2), /*Paella*/
+(7, 4, 1, 5.5 * cantidad, PVP* 0.21, 2), /*Ensalada Verde*/
+(7, 19, 2, 1.2 * cantidad, PVP* 0.21, 2), /*Café Cortado*/
+(8, 4, 1, 5.5 * cantidad, PVP* 0.21, 2), /*Ensalada Verde*/
+(8, 6, 1, 13 * cantidad, PVP* 0.21, 2), /*Lubina*/
+(8, 20, 1, 5 * cantidad, PVP* 0.21, 2), /*Coulant*/
+(8, 17, 1, 1.2 * cantidad, PVP* 0.21, 2), /*Café Solo*/
+(9, 4, 3, 5.5 * cantidad, PVP* 0.21, 2), /*Ensalada Verde*/
+(9, 2, 3, 8 * cantidad, PVP* 0.21, 2), /*Sopa de Rape*/
+(9, 1, 4, 5.5 * cantidad, PVP* 0.21, 2), /*Paella*/
+(9, 14, 1, 8.5 * cantidad, PVP* 0.21, 2), /*Alitas*/
+(9, 21, 1, 6 * cantidad, PVP* 0.21, 2), /*Helado de Vainilla*/
+(10, 4, 1, 5.5 * cantidad, PVP* 0.21, 2), /*Ensalada Verde*/
+(10, 2, 1, 8 * cantidad, PVP* 0.21, 2), /*Sopa de Rape*/
+(10, 3, 1, 7 * cantidad, PVP* 0.21, 2), /*Piña con Jamón*/
+(10, 13, 1, 12.5 * cantidad, PVP* 0.21, 2), /*Sepia a la Plancha*/
+(10, 11, 1, 7 * cantidad, PVP* 0.21, 2), /*Butifarra a la Brasa*/
+(10, 22, 3, 5 * cantidad, PVP* 0.21, 2), /*Raja de Melón*/
+(10, 17, 1, 1.2 * cantidad, PVP* 0.21, 2), /*Café Solo*/
+(10, 19, 1, 1.2 * cantidad, PVP* 0.21, 2); /*Café Cortado*/
 
 
 /*sentencias SELECT*/
@@ -640,6 +721,7 @@ select * from Tipo_Platos;
 select * from Elaborado;
 select * from Plato;
 select* from Ingredientes_Plato;
+select * from Comanda_Platos;
 
 /*sentencias DELETE*/
 delete from  producto 
@@ -650,6 +732,12 @@ where Codigo_Plato >= 1;
 
 delete from  Elaborado
 where Codigo_Producto >= 1;
+
+delete from  Comanda
+where Id_Comanda >= 1;
+
+delete from  Comanda_Platos
+where Id_Comanda >= 1;
 
 /*sentencias DROP*/
 drop database rosticeria;
