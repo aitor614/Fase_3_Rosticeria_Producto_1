@@ -45,7 +45,7 @@ create table Ingrediente (
 
 create table Elaborado (
 	Codigo_Producto int not null,
-    primary key (Codigo_Producto), 
+    primary key (Codigo_Producto),
 	foreign key (Codigo_Producto) references Producto (Codigo_Producto)
 	on delete cascade
     on update cascade
@@ -59,6 +59,7 @@ create table Alergeno(
 create table Alergenos_Producto (
 	Codigo_Producto int not null,
     alergeno varchar (50),
+    primary key (Codigo_Producto, alergeno),
     foreign key (Codigo_Producto) references Producto (Codigo_Producto)
     on delete cascade
     on update cascade,
@@ -68,7 +69,6 @@ create table Alergenos_Producto (
 );
 
 create table Compras_Producto (
-	primary key (fecha),
 	Codigo_Producto int not null,
 	NIF varchar (9) not null,
     fecha date,
@@ -76,6 +76,7 @@ create table Compras_Producto (
     precio float,
     IVA float,
     caducidad date,
+    primary key (Codigo_Producto, NIF, fecha),
     foreign key (NIF) references Proveedor (NIF),
     foreign key (Codigo_Producto) references Producto (Codigo_Producto)
 );
@@ -91,7 +92,7 @@ create table Detalle_Donacion (
 	Codigo_Producto int not null,
 	cantidad float not null,
 	observaciones text (500),
-	primary key (linea),
+    primary key (linea,fecha, Codigo_Producto),
 	foreign key (fecha) references Donaciones (fecha)
     on delete cascade
     on update cascade,
@@ -122,6 +123,7 @@ create table Ingredientes_Plato (
     Codigo_Producto int not null,
     Cant_Bruta float,
     Cant_Neta float,
+    /*primary key (Codigo_Plato, Codigo_Producto), no lo uso hasta que no sepa saltarme el duplicado de claves*/ 
     unidad enum ('Kilogramos', 'Litros', 'Unidades'),
     foreign key (Codigo_Plato) references Plato (Codigo_Plato)
     on delete cascade
@@ -147,6 +149,7 @@ create table Comanda_Platos (
     cantidad int,
     PVP float,
     IVA float,
+    /*primary key (Id_Comanda, Codigo_Plato), no lo uso hasta que no sepa saltarme el duplicado de claves*/ 
     foreign key (Id_Comanda) references Comanda (Id_Comanda)
     on delete cascade
     on update cascade,
@@ -161,11 +164,11 @@ create table Comanda_Elaborados (
     cantidad int,
     PVP int,
     IVA int,
+    /*primary key (Id_Comanda, Codigo_Producto ),no lo uso hasta que no sepa saltarme el duplicado de claves*/ 
     foreign key (Id_Comanda) references Comanda (Id_Comanda)
     on delete cascade
     on update cascade,
-    foreign key (Codigo_Producto) references Producto (Codigo_Producto)
-     on delete no action
+    foreign key (Codigo_Producto) references Elaborado (Codigo_Producto)
     on update cascade
 );
 /*modificaciones tabla*/
@@ -186,13 +189,7 @@ add IVA float;
 
 /*ejercicio 'D'*/
 alter table comanda
-add  unique (Fecha);
-
-alter table comanda
-add  unique (hora);
-
-alter table comanda
-add  unique (Mesa);
+add  unique (Fecha, hora, Mesa );
 
 /*ejercicio 'E'*/
 create table Sala (
@@ -449,6 +446,7 @@ values
 (82, 'Frigorifico'), /*Nugets de Pollo*/
 (83, 'Frigorífico'); /*Agua*/
 
+
 insert into Ingredientes_Plato (Codigo_Plato, Codigo_Producto, Cant_Bruta, Cant_Neta, unidad, Porcentaje_Merma)
 values
 /* 1 Paella Mixta*/
@@ -630,16 +628,16 @@ values
 (2,'Sulfitos' ), /*Tomate*/
 (3, 'Sulfitos'), /*Zanahoria*/
 (4,'Sulfitos'), /*Olivas Verdes*/
-(5, null ), /*Cebolla*/
-(6, null ), /*Zumo de Piña*/
-(7, null), /*Arroz*/
+(5, 'Sulfitos' ), /*Cebolla*/
+(6, 'Sulfitos' ), /*Zumo de Piña*/
+(7, 'Sulfitos'), /*Arroz*/
 (8, 'Crustáceos'), /*Gambas*/
 (9, 'Pescado'), /*Sepia*/
 (10, 'Sulfitos'), /*Conejo*/
 (11, 'Sulfitos'), /*Judia Tierna*/
 (12, 'Sulfitos'), /*Alcachofa*/
 (13, 'Sulfitos'), /*Pimiento Rojo*/
-(14, null), /*Azafran*/
+(14, 'Sulfitos'), /*Azafran*/
 (15, 'Pescado'), /*Rape*/
 (16, 'Gluten'), /*Pasta para Sopa*/
 (17, 'Sulfitos'), /*Puerro*/
@@ -661,27 +659,27 @@ values
 (33, 'Huevo'), /*Huevos*/
 (34, 'Sulfitos'), /*Melon*/
 (35, 'Sulfitos'), /*Sandia*/
-(36, null), /*Aceite*/
-(37, null), /*Sal*/
-(38, null), /*Azucar*/
+(36, 'Sulfitos'), /*Aceite*/
+(37, 'Sulfitos'), /*Sal*/
+(38, 'Sulfitos'), /*Azucar*/
 (39, 'Sulfitos'), /*Vinagre*/
 (40, 'Sulfitos'), /*Ajo*/
 (41, 'Sulfitos'), /*Patatas*/
-(42, null), /*Ketchup*/
-(43, null), /*Mayonesa*/
+(42, 'Sulfitos'), /*Ketchup*/
+(43, 'Sulfitos'), /*Mayonesa*/
 (44, 'Sulfitos'), /*Cocacola*/
 (45, 'Sulfitos'), /*Aquarius*/
 (46, 'Sulfitos'), /*Cerveza*/
 (47, 'Sulfitos'), /*Vino*/
 (48, 'Sulfitos'), /*Gaseosa*/
 (66, 'Sulfitos'), /*Alitas de pollo*/
-(67, null), /*Café*/
+(67, 'Sulfitos'), /*Café*/
 (68, 'Lactosa'), /*Leche*/
 (78, 'Sulfitos'), /*Zumo de Melocoton*/
 (80, 'Sulfitos'), /*Pavo*/
 (81, 'Sulfitos'), /*Codornices*/
 (82, 'Sulfitos'), /*Nugets de Pollo*/
-(83, null); /*Agua*/
+(83, 'Sulfitos'); /*Agua*/
 
 /*EJERCICIO 7*/
 insert into Sala (numSala)
@@ -916,3 +914,5 @@ drop table Comanda_Elaborados;
 drop table Comanda_Platos;
 drop table Sala;
 
+SET FOREIGN_KEY_CHECKS =  0 ;
+ 
