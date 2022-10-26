@@ -9,14 +9,14 @@ create table Categoria (
 );
 
 create table Proveedor (
-	NIF varchar (9) not null,
-	nombreEmpresa varchar(100),
-	nombreContacto varchar(100),
-	telefono varchar(50),
+	NIF varchar (45) not null,
+	nombreEmpresa varchar(255),
+	nombreContacto varchar(255),
+	telefono varchar(255),
 	dirección varchar(255),
-	mail varchar(50),
-	web varchar(100),
-	registro varchar(50),
+	mail varchar(255),
+	web varchar(255),
+	registro varchar(255),
 	idCategoria int not null,
 	primary key (NIF),
 	foreign key (idCategoria) references Categoria (idCategoria)
@@ -25,8 +25,8 @@ create table Proveedor (
 
 create table Producto (
 	Codigo_Producto int not null,
-	nombre varchar(100) not null,
-	unidad int not null,
+	nombre varchar(255) not null,
+	unidad int,
 	alertaStock int not null default 0,
 	idCategoria int not null,
 	primary key (Codigo_Producto),
@@ -52,7 +52,7 @@ create table Elaborado (
 );
 
 create table Alergeno(
-	alergeno varchar (50),
+	alergeno varchar (255),
 	primary key (alergeno)
 );
 
@@ -70,11 +70,11 @@ create table Alergenos_Producto (
 
 create table Compras_Producto (
 	Codigo_Producto int not null,
-	NIF varchar (9) not null,
-    fecha date,
+	NIF varchar (255) not null,
+    fecha date not null,
     cantidad int not null,
-    precio float,
-    IVA float,
+    precio float not null,
+    IVA float not null,
     caducidad date,
     primary key (Codigo_Producto, NIF, fecha),
     foreign key (NIF) references Proveedor (NIF),
@@ -91,7 +91,7 @@ create table Detalle_Donacion (
 	fecha date not null,
 	Codigo_Producto int not null,
 	cantidad float not null,
-	observaciones text (500),
+	observaciones mediumtext,
     primary key (linea,fecha, Codigo_Producto),
 	foreign key (fecha) references Donaciones (fecha)
     on delete cascade
@@ -101,17 +101,17 @@ create table Detalle_Donacion (
 
 create table Tipo_Platos (
 	Id_Tipo int not null auto_increment,
-	Tipo_De_Plato varchar (100),
+	Tipo_De_Plato varchar (255),
 	primary key (id_Tipo)
 );
 
 create table Plato (
 	Codigo_Plato int not null,
-	nombrePlato varchar (150) not null,
+	nombrePlato varchar (255) not null,
 	Tipo_Plato int,
-	elaboracion longtext,
-	PVP float,
-	En_Menu boolean,
+	elaboracion longtext not null,
+	PVP float not null,
+	En_Menu boolean not null,
 	primary key (Codigo_Plato),
 	foreign key (Tipo_Plato) references Tipo_Platos (id_Tipo)
     on delete set null
@@ -121,8 +121,8 @@ create table Plato (
 create table Ingredientes_Plato (
 	Codigo_Plato int not null,
     Codigo_Producto int not null,
-    Cant_Bruta float,
-    Cant_Neta float,
+    Cant_Bruta float not null,
+    Cant_Neta float not null,
     /*primary key (Codigo_Plato, Codigo_Producto), no lo uso hasta que no sepa saltarme el duplicado de claves*/ 
     unidad enum ('Kilogramos', 'Litros', 'Unidades'),
     foreign key (Codigo_Plato) references Plato (Codigo_Plato)
@@ -135,20 +135,20 @@ create table Ingredientes_Plato (
 
 create table Comanda (
 	Id_Comanda int not null,
-    Fecha date,
-    Mesa int,
-    hora time,
+    Fecha date not null,
+    Mesa int not null,
+    hora time not null,
     comensales int,
-    ticket int,
+    ticket int not null default 0,
     primary key (Id_Comanda)
 );
 
 create table Comanda_Platos (
 	Id_Comanda int not null,
     Codigo_Plato int not null,
-    cantidad int,
-    PVP float,
-    IVA float,
+    cantidad int not null,
+    PVP float not null,
+    IVA float not null,
     /*primary key (Id_Comanda, Codigo_Plato), no lo uso hasta que no sepa saltarme el duplicado de claves*/ 
     foreign key (Id_Comanda) references Comanda (Id_Comanda)
     on delete cascade
@@ -160,10 +160,10 @@ create table Comanda_Platos (
 
 create table Comanda_Elaborados (
 	Id_Comanda int not null,
-    Codigo_Producto int,
-    cantidad int,
-    PVP int,
-    IVA int,
+    Codigo_Producto int not null,
+    cantidad int not null,
+    PVP int not null,
+    IVA int not null,
     /*primary key (Id_Comanda, Codigo_Producto ),no lo uso hasta que no sepa saltarme el duplicado de claves*/ 
     foreign key (Id_Comanda) references Comanda (Id_Comanda)
     on delete cascade
@@ -900,19 +900,23 @@ delete from  Comanda_Platos
 where Id_Comanda >= 1;
 
 /*sentencias DROP*/
-drop database rosticeria;
-drop table proveedor;
-drop table Alergenos_Producto;
-drop table Donaciones;
-drop table Detalle_Donacion;
-drop table compras_Producto;
+drop table alergenos_producto;
+drop table alergeno;
+drop table compras_producto;
+drop table detalle_donacion;
+drop table comanda_elaborados;
 drop table elaborado;
-drop table indrediente;
+drop table ingredientes_plato;
+drop table ingrediente;
 drop table producto;
+drop table proveedor;
+drop table comanda_platos;
 drop table comanda;
-drop table Comanda_Elaborados;
-drop table Comanda_Platos;
-drop table Sala;
+drop table categoria;
+drop table donaciones;
+drop table plato;
+drop table tipo_platos;
+drop table sala;
 
 SET FOREIGN_KEY_CHECKS =  0 ;
  
